@@ -1,0 +1,65 @@
+#boostAchievementTable i {
+  font-size: 2em;
+}
+
+#boostAchievementTable table {
+  margin-top: 120px;
+}
+
+#boostAchievementTable td {
+  border: 1px solid #000;
+} 
+#boostAchievementTable td:first {
+  border-left: 0;
+}
+
+#boostAchievementTable td.green {
+  background-color: #4D844D;
+}
+
+#boostAchievementTable th {
+  line-height: 32px;
+  padding-bottom: 4px;
+}
+
+#boostAchievementTable .vertical-text {
+  display: inline-block;
+  width: 32px;
+}
+
+#boostAchievementTable .vertical-text a {
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 32px;
+  transform: translate(0,100%) rotate(-90deg);
+  transform-origin: 0 0;
+}
+
+#xbabutton {
+  display: inline-block;
+  margin: 1em 0 0 0;
+  padding: 0.4em 2em;
+  font-size: 1em;
+  background: rgba(78,128,60,1);
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.1);
+  text-decoration: none;
+  border: solid 1px rgba(20,20,20,1);
+  border-radius: 5px;
+  box-shadow: inset 1px 1px 1px rgba(255,255,255,0.05), inset 0 0 35px rgba(0,0,0,0.6), 0 5px 5px -4px rgba(0,0,0,0.8);
+}
+
+#xbabutton:hover {
+  background: rgba(78,128,60,0.5);
+}
+
+#xbabutton:active {
+  position: relative;
+  top: 5px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.4), inset 0 0 35px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.1), inset 0 6px 4px rgba(0,0,0,0.4);
+}
+
+#xba {
+	text-align: center;
+	width: 100%;
+}
