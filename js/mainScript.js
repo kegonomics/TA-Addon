@@ -19,11 +19,16 @@ chrome.storage.sync.get(null, function(retVal) {
 			// Get achievement info
 			// 0 = Achievement ID
 			// 1 = Achievement name
+			// 2 = Achievement Link
 			var sessionAchievements = $(".sessionachievements .friendfeeditem span a[href$='achievement.htm'");
 			console.log("Session Achivements: " + sessionAchievements.length);
 
 			for (i=0;i<sessionAchievements.length;i++) {
-				sessionAchievements[i] = [sessionAchievements[i].href.match(/(a\d*)(?=\/)/g),sessionAchievements[i].text];
+				sessionAchievements[i] = [
+					sessionAchievements[i].href.match(/(a\d*)(?=\/)/)[0].match(/\d.*/)[0],
+					sessionAchievements[i].text,
+					sessionAchievements[i].href
+				];
 			}
 			console.log(sessionAchievements);
 
@@ -31,241 +36,123 @@ chrome.storage.sync.get(null, function(retVal) {
 			// 0 = Gamertag
 			// 1 = Gamer achievements link for game
 			// 2 = Gamers achievement completions for session (true/false)
-			var gamers = $("#oGamingSessionGamerList .gamer a");
-			var numGamers = $("#oGamingSessionGamerList .gamer").length;
-			console.log("Gamers: " + numGamers);
+			var gamerLinks = $("#oGamingSessionGamerList .gamer a");
+			var gamers = [];
+			var n = 0;
 
-			for (i=0;i<numGamers;i++) {
-				gamers[i] = [
-					gamers[i].text,
-					gamers[i].href,
-					[]
-				];
-				gamers.splice(i+1,2);
+			for (i=0;i<gamerLinks.length;i++) {
+				if (gamerLinks[i].href.match(/achievements\.htm/)) {
+					gamers[n] = [
+						gamerLinks[i].text,
+						gamerLinks[i].href,
+						[]
+					];
+					n++;
+				}
 			}
+
+			console.log("Gamers: " + gamers.length);
 			console.log(gamers);
 
 			// Get Achievement Completion for Gamers
-			$.get(gamers[0][1], function(data) {
-				html = $("#main", $(data));
-			});
+			for (i=0;i<gamers.length;i++) {
+				var html = $("#main",$.ajax({type: "GET", url: gamers[i][1], async: false}).responseText);
 
-			console.log(html);
+				// Checks if player has unlocked achievements shown on achievements page
+				var achView = 0; // 0 = Green, 1 = Red, 2 = Both
 
-			// Draw table
-			/*$("#h1Messages").before(""+
-				"<div id=\"boostAchievementTable\">"+
+				if ($(html).find(".achievementpanel.green").length) {
+					if ($(html).find(".achievementpanel.red").length) {
+						achView = 2;
+					} else {
+						achView = 0;
+					}
+				} else {
+					achView = 1;
+				}
+
+				// Gets unlocked status for session achievements
+				for (x=0;x<sessionAchievements.length;x++) {
+					if (achView) { // If red achievements are on page
+						if ($(html).find("#ap" + sessionAchievements[x][0]).hasClass("red")) { // If achievement is red
+							gamers[i][2][x] = 0;
+						} else {
+							gamers[i][2][x] = 1;
+						}
+					} else { // If only green achievements are on page
+						if ($(html).find("#ap" + sessionAchievements[x][0]).hasClass("green")) { // If achievement is green
+							gamers[i][2][x] = 1;
+						} else {
+							gamers[i][2][x] = 2;
+						}
+					}
+				}
+			}
+
+			console.log(gamers);
+
+			// Create table HTML
+			var achTable = "<div id=\"boostAchievementTable\">"+
 					"<table class=\"maintable\">"+
 						"<thead>"+
 							"<tr>"+
 								"<th>"+
 									"&nbsp;"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Planting a Flag</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Roadkill Rampage</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Rock and Coil Hit Back</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Spree Master</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">The True King</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Domination</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Double Trouble</a></div>"+
-								"</th>"+
-								"<th>"+
-									"<div class=\"vertical-text\"><a href=\"\">Party Pooper</a></div>"+
-								"</th>"+
-							"</tr>"+
+								"</th>";
+
+			// Build columns for each achievement					
+			for (i=0;i<sessionAchievements.length;i++) {
+				achTable +=		"<th>"+
+									"<div class=\"vertical-text\"><a href=\""+
+										sessionAchievements[i][2]+
+									"\">"+
+										sessionAchievements[i][1]+
+									"</a></div>"+
+								"</th>";
+			}
+								
+			achTable +=		"</tr>"+
 						"</thead>"+
 						"<tbody>"+
-							"<tr class=\"even\">"+
+							"<tr>";
+
+			// Build rows for each gamer
+			for (i=0;i<gamers.length;i++) {
+				achTable +=	"<tr";
+				if (i%2) {
+					achTable += " class=\"even\"";
+				} else {
+					achTable += " class=\"odd\"";
+				}
+				achTable +=	">"+
 								"<td>"+
-									"<a href=\"\"><img class=\"smallicon\" src=\"http://im5.trueachievements.com/imagestore/thumbs/0001327900/1327924.jpg\"/> Player 1</a>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-							"</tr>"+
-							"<tr class=\"odd\">"+
-								"<td>"+
-									"<a href=\"\"><img class=\"smallicon\" src=\"http://im10.trueachievements.com/imagestore/thumbs/0001144900/1144909.jpg\"/> Player 2</a>"+
-								"</td>"+
-								"<td>"+
-									"<i class=\"fa fa-check\"></i>"+
-								"</td>"+
-								"<td>"+
-									"<i class=\"fa fa-check\"></i>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									"<i class=\"fa fa-check\"></i>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									"<i class=\"fa fa-check\"></i>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-							"</tr>"+
-							"<tr class=\"even\">"+
-								"<td>"+
-									"<a href=\"\"><img class=\"smallicon\" src=\"http://im1.trueachievements.com/imagestore/thumbs/0001682200/1682200.png\"/> Player 3</a>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-							"</tr>"+
-							"<tr class=\"odd\">"+
-								"<td>"+
-									"<a href=\"\"><img class=\"smallicon\" src=\"http://im1.trueachievements.com/imagestore/thumbs/0001048400/1048420.jpg\"/> Player 4</a>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-							"</tr>"+
-							"<tr class=\"even\">"+
-								"<td>"+
-									"<a href=\"\"><img class=\"smallicon\" src=\"http://im9.trueachievements.com/imagestore/thumbs/0001258600/1258608.jpg\"/> Player 5</a>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-							"</tr>"+
-							"<tr class=\"odd\">"+
-								"<td>"+
-									"<a href=\"\"><img class=\"smallicon\" src=\"http://im9.trueachievements.com/imagestore/thumbs/0001598700/1598748.jpg\"/> Player 6</a>"+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-								"<td>"+
-									""+
-								"</td>"+
-							"</tr>"+
-						"</tbody>"+
+									"<a href=\""+
+										gamers[i][1]+
+									"\">"+
+										gamers[i][0]+
+									"</a>"+
+								"</td>";
+
+				// Fill each column for the gamer
+				for (x=0;x<gamers[i][2].length;x++) {
+					achTable +=	"<td>";
+
+					if (gamers[i][2][x]) {
+						achTable += "<i class=\"fa fa-check\"></i>";
+					}
+									
+					achTable +=	"</td>";
+				}
+								
+							"</tr>";
+			}
+			
+			achTable +=	"</tbody>"+
 					"</table>"+
-				"</div>"
-			);*/
+				"</div>";
+			
+			// Draw table
+			$("#h1Messages").before(achTable);
 		}
 	}
 });
