@@ -8,9 +8,6 @@
 
 #boostAchievementTable td {
   border: 1px solid #000;
-} 
-#boostAchievementTable td:first-child {
-  text-align: left;
 }
 
 #boostAchievementTable td.green {
@@ -87,7 +84,7 @@
 .spinner > div {
   width: 10px;
   height: 10px;
-  margin-right: 10px;
+  margin: 0 5px;
   background-color: #9ACC00;
 
   border-radius: 100%;
