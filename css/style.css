@@ -1,5 +1,5 @@
 #boostAchievementTable i {
-  font-size: 2em;
+  font-size: auto;
 }
 
 #boostAchievementTable table {
@@ -9,8 +9,8 @@
 #boostAchievementTable td {
   border: 1px solid #000;
 } 
-#boostAchievementTable td:first {
-  border-left: 0;
+#boostAchievementTable td:first-child {
+  text-align: left;
 }
 
 #boostAchievementTable td.green {
@@ -36,13 +36,13 @@
 
 #boostAchievementTable .vertical-text {
   display: inline-block;
-  width: 32px;
+  width: 16px;
 }
 
 #boostAchievementTable .vertical-text a {
   display: inline-block;
   white-space: nowrap;
-  line-height: 32px;
+  line-height: 16px;
   transform: translate(0,100%) rotate(-90deg);
   transform-origin: 0 0;
 }
