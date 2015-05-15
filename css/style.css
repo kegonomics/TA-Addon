@@ -17,6 +17,18 @@
   background-color: #4D844D;
 }
 
+#boostAchievementTable td.green i {
+  color: #afa;
+}
+
+#boostAchievementTable td.red {
+  background-color: #9B4D4D;
+}
+
+#boostAchievementTable td.red i {
+  color: #F4A6A4;
+}
+
 #boostAchievementTable th {
   line-height: 32px;
   padding-bottom: 4px;

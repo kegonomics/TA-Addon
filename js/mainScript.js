@@ -135,10 +135,12 @@ chrome.storage.sync.get(null, function(retVal) {
 
 				// Fill each column for the gamer
 				for (x=0;x<gamers[i][2].length;x++) {
-					achTable +=	"<td>";
+					achTable +=	"<td";
 
 					if (gamers[i][2][x]) {
-						achTable += "<i class=\"fa fa-check\"></i>";
+						achTable += " class=\"green\"><i class=\"fa fa-check\"></i>";
+					} else {
+						achTable +=	" class=\"red\"><i class=\"fa fa-times\"></i>";
 					}
 									
 					achTable +=	"</td>";
