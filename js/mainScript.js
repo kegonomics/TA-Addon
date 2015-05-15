@@ -10,23 +10,21 @@ $(".smallpanel.panelnavy:contains('External links:')").append("<div id='xb'><a i
 */
 
 chrome.storage.sync.get(null, function(retVal) {
-	console.log("retVal: ", retVal);
+//	console.log("retVal: ", retVal);
 
 	if (retVal["boostSessionTable"]) {
 		if ($("#oTitle.pagetitle:contains('Gaming Session Details')")) {
-			$("#h1Messages").before("<div id=\"#boostAchievementTable\" class=\"xb\"><a id=\"#boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">View This Session's Achievement Matrix</a></div>");
+			$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">View This Session's Achievement Matrix</a></div>");
 			
 			// On click, do this
-			$("#main .session").on("click","#boostAchievementTableButton",function(e) {
-				console.log("click!");
-				e.preventDefault();
+			$("#main .session").on("click","#boostAchievementTableButton",function(event) {
+				event.preventDefault();
 
 				// Get achievement info
 				// 0 = Achievement ID
 				// 1 = Achievement name
 				// 2 = Achievement Link
 				var sessionAchievements = $(".sessionachievements .friendfeeditem span a[href$='achievement.htm'");
-				console.log("Session Achivements: " + sessionAchievements.length);
 
 				for (i=0;i<sessionAchievements.length;i++) {
 					sessionAchievements[i] = [
@@ -35,7 +33,6 @@ chrome.storage.sync.get(null, function(retVal) {
 						sessionAchievements[i].href
 					];
 				}
-				console.log(sessionAchievements);
 
 				// Get gamers in session
 				// 0 = Gamertag
@@ -55,9 +52,6 @@ chrome.storage.sync.get(null, function(retVal) {
 						n++;
 					}
 				}
-
-				console.log("Gamers: " + gamers.length);
-				console.log(gamers);
 
 				// Get Achievement Completion for Gamers
 				for (i=0;i<gamers.length;i++) {
@@ -93,8 +87,6 @@ chrome.storage.sync.get(null, function(retVal) {
 						}
 					}
 				}
-
-				console.log(gamers);
 
 				// Create table HTML
 				var achTable = "<table class=\"maintable\">"+
