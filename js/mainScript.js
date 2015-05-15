@@ -19,6 +19,9 @@ chrome.storage.sync.get(null, function(retVal) {
 			// On click, do this
 			$("#main .session").on("click","#boostAchievementTableButton",function(event) {
 				event.preventDefault();
+				setTimeout(function(){
+					$("#boostAchievementTableButton").empty().append("<div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
+				}, 500);
 
 				// Get achievement info
 				// 0 = Achievement ID
