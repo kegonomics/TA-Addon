@@ -1,9 +1,7 @@
 // Saves options to chrome.storage
 function saveOptions() {
-  var xbaLink = document.getElementById('xbaLink').checked;
   var boostSessionTable = document.getElementById('boostSessionTable').checked;
   chrome.storage.sync.set({
-    xbaLink: xbaLink,
     boostSessionTable: boostSessionTable
   }, function() {
     // Update status to let user know options were saved.
@@ -19,10 +17,8 @@ function saveOptions() {
 // stored in chrome.storage.
 function restoreOptions() {
   chrome.storage.sync.get({
-    xbaLink: true,
     boostSessionTable: true
   }, function(items) {
-    document.getElementById('xbaLink').checked = items.xbaLink;
     document.getElementById('boostSessionTable').checked = items.boostSessionTable;
   });
 }
