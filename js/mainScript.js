@@ -19,140 +19,141 @@ chrome.storage.sync.get(null, function(retVal) {
 			// On click, do this
 			$("#main .session").on("click","#boostAchievementTableButton",function(event) {
 				event.preventDefault();
+				
+				$("#boostAchievementTable").empty().append("<div class=\"spinner\">Loading<br/><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
+
 				setTimeout(function(){
-					$("#boostAchievementTableButton").empty().append("<div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
-				}, 500);
+					// Get achievement info
+					// 0 = Achievement ID
+					// 1 = Achievement name
+					// 2 = Achievement Link
+					var sessionAchievements = $(".sessionachievements .friendfeeditem span a[href$='achievement.htm'");
 
-				// Get achievement info
-				// 0 = Achievement ID
-				// 1 = Achievement name
-				// 2 = Achievement Link
-				var sessionAchievements = $(".sessionachievements .friendfeeditem span a[href$='achievement.htm'");
-
-				for (i=0;i<sessionAchievements.length;i++) {
-					sessionAchievements[i] = [
-						sessionAchievements[i].href.match(/(a\d*)(?=\/)/)[0].match(/\d.*/)[0],
-						sessionAchievements[i].text,
-						sessionAchievements[i].href
-					];
-				}
-
-				// Get gamers in session
-				// 0 = Gamertag
-				// 1 = Gamer achievements link for game
-				// 2 = Gamers achievement completions for session (true/false)
-				var gamerLinks = $("#oGamingSessionGamerList .gamer a");
-				var gamers = [];
-				var n = 0;
-
-				for (i=0;i<gamerLinks.length;i++) {
-					if (gamerLinks[i].href.match(/achievements\.htm/)) {
-						gamers[n] = [
-							gamerLinks[i].text,
-							gamerLinks[i].href,
-							[]
+					for (i=0;i<sessionAchievements.length;i++) {
+						sessionAchievements[i] = [
+							sessionAchievements[i].href.match(/(a\d*)(?=\/)/)[0].match(/\d.*/)[0],
+							sessionAchievements[i].text,
+							sessionAchievements[i].href
 						];
-						n++;
-					}
-				}
-
-				// Get Achievement Completion for Gamers
-				for (i=0;i<gamers.length;i++) {
-					var html = $("#main",$.ajax({type: "GET", url: gamers[i][1], async: false}).responseText);
-
-					// Checks if player has unlocked achievements shown on achievements page
-					var achView = 0; // 0 = Green, 1 = Red, 2 = Both
-
-					if ($(html).find(".achievementpanel.green").length) {
-						if ($(html).find(".achievementpanel.red").length) {
-							achView = 2;
-						} else {
-							achView = 0;
-						}
-					} else {
-						achView = 1;
 					}
 
-					// Gets unlocked status for session achievements
-					for (x=0;x<sessionAchievements.length;x++) {
-						if (achView) { // If red achievements are on page
-							if ($(html).find("#ap" + sessionAchievements[x][0]).hasClass("red")) { // If achievement is red
-								gamers[i][2][x] = 0;
-							} else {
-								gamers[i][2][x] = 1;
-							}
-						} else { // If only green achievements are on page
-							if ($(html).find("#ap" + sessionAchievements[x][0]).hasClass("green")) { // If achievement is green
-								gamers[i][2][x] = 1;
-							} else {
-								gamers[i][2][x] = 2;
-							}
+					// Get gamers in session
+					// 0 = Gamertag
+					// 1 = Gamer achievements link for game
+					// 2 = Gamers achievement completions for session (true/false)
+					var gamerLinks = $("#oGamingSessionGamerList .gamer a");
+					var gamers = [];
+					var n = 0;
+
+					for (i=0;i<gamerLinks.length;i++) {
+						if (gamerLinks[i].href.match(/achievements\.htm/)) {
+							gamers[n] = [
+								gamerLinks[i].text,
+								gamerLinks[i].href,
+								[]
+							];
+							n++;
 						}
 					}
-				}
 
-				// Create table HTML
-				var achTable = "<table class=\"maintable\">"+
-							"<thead>"+
-								"<tr>"+
-									"<th>"+
-										"&nbsp;"+
-									"</th>";
+					// Get Achievement Completion for Gamers
+					for (i=0;i<gamers.length;i++) {
+						var html = $("#main",$.ajax({type: "GET", url: gamers[i][1], async: false}).responseText);
 
-				// Build columns for each achievement					
-				for (i=0;i<sessionAchievements.length;i++) {
-					achTable +=		"<th>"+
-										"<div class=\"vertical-text\"><a href=\""+
-											sessionAchievements[i][2]+
-										"\">"+
-											sessionAchievements[i][1]+
-										"</a></div>"+
-									"</th>";
-				}
-									
-				achTable +=		"</tr>"+
-							"</thead>"+
-							"<tbody>"+
-								"<tr>";
+						// Checks if player has unlocked achievements shown on achievements page
+						var achView = 0; // 0 = Green, 1 = Red, 2 = Both
 
-				// Build rows for each gamer
-				for (i=0;i<gamers.length;i++) {
-					achTable +=	"<tr";
-					if (i%2) {
-						achTable += " class=\"even\"";
-					} else {
-						achTable += " class=\"odd\"";
-					}
-					achTable +=	">"+
-									"<td>"+
-										"<a href=\""+
-											gamers[i][1]+
-										"\">"+
-											gamers[i][0]+
-										"</a>"+
-									"</td>";
-
-					// Fill each column for the gamer
-					for (x=0;x<gamers[i][2].length;x++) {
-						achTable +=	"<td";
-
-						if (gamers[i][2][x]) {
-							achTable += " class=\"green\"><i class=\"fa fa-check\"></i>";
+						if ($(html).find(".achievementpanel.green").length) {
+							if ($(html).find(".achievementpanel.red").length) {
+								achView = 2;
+							} else {
+								achView = 0;
+							}
 						} else {
-							achTable +=	" class=\"red\"><i class=\"fa fa-times\"></i>";
+							achView = 1;
+						}
+
+						// Gets unlocked status for session achievements
+						for (x=0;x<sessionAchievements.length;x++) {
+							if (achView) { // If red achievements are on page
+								if ($(html).find("#ap" + sessionAchievements[x][0]).hasClass("red")) { // If achievement is red
+									gamers[i][2][x] = 0;
+								} else {
+									gamers[i][2][x] = 1;
+								}
+							} else { // If only green achievements are on page
+								if ($(html).find("#ap" + sessionAchievements[x][0]).hasClass("green")) { // If achievement is green
+									gamers[i][2][x] = 1;
+								} else {
+									gamers[i][2][x] = 2;
+								}
+							}
+						}
+					}
+
+					// Create table HTML
+					var achTable = "<table class=\"maintable\">"+
+								"<thead>"+
+									"<tr>"+
+										"<th>"+
+											"&nbsp;"+
+										"</th>";
+
+					// Build columns for each achievement					
+					for (i=0;i<sessionAchievements.length;i++) {
+						achTable +=		"<th>"+
+											"<div class=\"vertical-text\"><a href=\""+
+												sessionAchievements[i][2]+
+											"\">"+
+												sessionAchievements[i][1]+
+											"</a></div>"+
+										"</th>";
+					}
+										
+					achTable +=		"</tr>"+
+								"</thead>"+
+								"<tbody>"+
+									"<tr>";
+
+					// Build rows for each gamer
+					for (i=0;i<gamers.length;i++) {
+						achTable +=	"<tr";
+						if (i%2) {
+							achTable += " class=\"even\"";
+						} else {
+							achTable += " class=\"odd\"";
+						}
+						achTable +=	">"+
+										"<td>"+
+											"<a href=\""+
+												gamers[i][1]+
+											"\">"+
+												gamers[i][0]+
+											"</a>"+
+										"</td>";
+
+						// Fill each column for the gamer
+						for (x=0;x<gamers[i][2].length;x++) {
+							achTable +=	"<td";
+
+							if (gamers[i][2][x]) {
+								achTable += " class=\"green\"><i class=\"fa fa-check\"></i>";
+							} else {
+								achTable +=	" class=\"red\"><i class=\"fa fa-times\"></i>";
+							}
+											
+							achTable +=	"</td>";
 						}
 										
-						achTable +=	"</td>";
+									"</tr>";
 					}
-									
-								"</tr>";
-				}
-				
-				achTable +=	"</tbody>"+
-						"</table>";
-				
-				// Draw table
-				$("#boostAchievementTable").empty().append(achTable);
+					
+					achTable +=	"</tbody>"+
+							"</table>";
+					
+					// Draw table
+					$("#boostAchievementTable").empty().append(achTable);
+				}, 500);
 			});
 		}
 	}
