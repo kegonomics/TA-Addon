@@ -1,14 +1,3 @@
-
-/*// If this option is set to on
-chrome.storage.sync.get({
-	xbaLink: true
-});
-
-// Run this code
-
-$(".smallpanel.panelnavy:contains('External links:')").append("<div id='xb'><a id='xbbutton' href='#'>View Game on XboxAchievements.com</a></div>");
-*/
-
 chrome.storage.sync.get(null, function(retVal) {
 //	console.log("retVal: ", retVal);
 
@@ -99,7 +88,7 @@ chrome.storage.sync.get(null, function(retVal) {
 											"&nbsp;"+
 										"</th>";
 
-					// Build columns for each achievement					
+					// Build columns for each achievement
 					for (i=0;i<sessionAchievements.length;i++) {
 						achTable +=		"<th>"+
 											"<div class=\"vertical-text\"><a href=\""+

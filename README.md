@@ -1,9 +1,9 @@
 TrueAchievements Additamenta
 ============================
 
-TA Additamenta is a chrome extension that adds additional features to http://trueachievements.com.
+TrueAchievements Additamenta (TAA) is a chrome extension that adds additional features to http://trueachievements.com.
 
-Current features are:
+Current features:
 
   - Gaming Session Achievement Matrix
 
@@ -13,7 +13,7 @@ Current features are:
 
 ### Tech
 
-Dillinger uses a number of open source projects to work properly:
+TAA uses a number of open source projects to work properly:
 
 * [jQuery 2.1.3](https://jquery.com/)
 * [FontAwesome](https://fortawesome.github.io/Font-Awesome/)
