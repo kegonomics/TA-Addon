@@ -4,7 +4,7 @@ chrome.storage.sync.get(null, function(retVal) {
 	if (retVal["boostSessionTable"]) { // If user has option enabled
 		if ($("form#frm").attr("action").match(/gamingsession\.aspx/)[0]) { // Checks if page is a boosting session
 			if ($(".sessionachievements .friendfeeditem span a[href$='achievement.htm'").length > 1) { // Checks for more than 1 achievement
-				$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">View This Session's Achievement Matrix</a></div>");
+				$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">Build This Session's Achievement Matrix</a></div>");
 				
 				// On click, do this
 				$("#main .session").on("click","#boostAchievementTableButton",function(event) {
