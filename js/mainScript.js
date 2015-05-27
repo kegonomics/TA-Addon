@@ -127,9 +127,9 @@ chrome.storage.sync.get(null, function(retVal) {
 								achTable +=	"<td";
 
 								if (gamers[i][2][x]) {
-									achTable += " class=\"green\"><i class=\"fa fa-check\"></i>";
+									achTable += " class=\"green locked\"><span/>";
 								} else {
-									achTable +=	" class=\"red\"><i class=\"fa fa-times\"></i>";
+									achTable +=	" class=\"red unlocked\"><span/>";
 								}
 												
 								achTable +=	"</td>";
@@ -143,6 +143,10 @@ chrome.storage.sync.get(null, function(retVal) {
 						
 						// Draw table
 						$("#boostAchievementTable").empty().append(achTable);
+
+						$("#boostAchievementTable td.unlocked").on('click', function(e) {
+							$(this).toggleClass("red green");
+						});
 					}, 500);
 				});
 			}
