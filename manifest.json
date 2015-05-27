@@ -1,7 +1,7 @@
 {
   // Required
   "manifest_version": 2,
-  "name": "TrueAchievements Additamenta",
+  "name": "TrueAchievements Session Achievement Matrix",
   "version": "0.2",
   "options_page": "options.html",
   "icons": { "16": "img/icon16.png",
@@ -12,7 +12,7 @@
 
   // Recommended
   "default_locale": "en",
-  "description": "Adds miscellaneous features to TrueAchievements.com",
+  "description": "Adds an achievement matrix for gaming sessions to TrueAchievements.com",
 
   // Optional
   "author": "kegonomics",
