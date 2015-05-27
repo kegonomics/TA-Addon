@@ -84,10 +84,7 @@ chrome.storage.sync.get(null, function(retVal) {
 						// Create table HTML
 						var achTable = "<table class=\"maintable\">"+
 									"<thead>"+
-										"<tr>"+
-											"<th>"+
-												"&nbsp;"+
-											"</th>";
+										"<tr>";
 
 						// Build columns for each achievement
 						for (i=0;i<sessionAchievements.length;i++) {
@@ -100,7 +97,10 @@ chrome.storage.sync.get(null, function(retVal) {
 											"</th>";
 						}
 											
-						achTable +=		"</tr>"+
+						achTable +=			"<th>"+
+												"&nbsp;"+
+											"</th>"+
+										"</tr>"+
 									"</thead>"+
 									"<tbody>"+
 										"<tr>";
@@ -113,10 +113,7 @@ chrome.storage.sync.get(null, function(retVal) {
 							} else {
 								achTable += " class=\"odd show\"";
 							}
-							achTable +=	">"+
-											"<td title=\"Toggle No-Show\">"+
-												gamers[i][0]+
-											"</td>";
+							achTable +=	">";
 
 							// Fill each column for the gamer
 							for (x=0;x<gamers[i][2].length;x++) {
@@ -131,6 +128,9 @@ chrome.storage.sync.get(null, function(retVal) {
 								achTable +=	"</td>";
 							}
 											
+								achTable += "<td title=\"Toggle No-Show\">"+
+												gamers[i][0]+
+											"</td>"+
 										"</tr>";
 						}
 						
@@ -146,7 +146,7 @@ chrome.storage.sync.get(null, function(retVal) {
 						});
 
 						// Toggle player as show/no-show
-						$("#boostAchievementTable tr.show td:first-child").on('click', function(e) {
+						$("#boostAchievementTable tr.show td:last-child").on('click', function(e) {
 							$(this).parent().toggleClass("show noShow");
 						});
 					}, 500);
