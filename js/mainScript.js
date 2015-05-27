@@ -2,7 +2,7 @@ chrome.storage.sync.get(null, function(retVal) {
 //	console.log("retVal: ", retVal);
 
 	if (retVal["boostSessionTable"]) {
-		if ($("#oTitle.pagetitle:contains('Gaming Session Details')")) {
+		if ($("form#frm").attr("action").match(/gamingsession\.aspx/)[0]) {
 			$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">View This Session's Achievement Matrix</a></div>");
 			
 			// On click, do this
