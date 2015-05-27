@@ -82,7 +82,7 @@ chrome.storage.sync.get(null, function(retVal) {
 						}
 
 						// Create table HTML
-						var achTable = "<table class=\"maintable\">"+
+						var achTable = "<table class=\"maintable disable-selection\">"+
 									"<thead>"+
 										"<tr>";
 
