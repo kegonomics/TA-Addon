@@ -43,7 +43,7 @@
 #boostAchievementTable .green span:after {
   font-family: FontAwesome;
   color: #afa;
-  content: "";
+  content: "\f00c";
 }
 
 #boostAchievementTable tr.noShow .green span:after, #boostAchievementTable tr.noShow .red span:after {
@@ -53,7 +53,7 @@
 #boostAchievementTable .red span:after {
   font-family: FontAwesome;
   color: #F4A6A4;
-  content: "";
+  content: "\f00d";
 }
 
 #boostAchievementTable .unlocked, #boostAchievementTable tr td:last-child {
