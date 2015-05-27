@@ -10,7 +10,7 @@ chrome.storage.sync.get(null, function(retVal) {
 				$("#main .session").on("click","#boostAchievementTableButton",function(event) {
 					event.preventDefault();
 					
-					$("#boostAchievementTable").empty().append("<div class=\"spinner\">Loading<br/><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
+					$("#boostAchievementTable").empty().before("<h1 class=\"block\">Achievement Matrix</h1>").append("<div class=\"spinner\">Loading<br/><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
 
 					setTimeout(function(){
 						// Get achievement info
