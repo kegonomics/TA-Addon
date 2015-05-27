@@ -109,17 +109,13 @@ chrome.storage.sync.get(null, function(retVal) {
 						for (i=0;i<gamers.length;i++) {
 							achTable +=	"<tr";
 							if (i%2) {
-								achTable += " class=\"even\"";
+								achTable += " class=\"even show\"";
 							} else {
-								achTable += " class=\"odd\"";
+								achTable += " class=\"odd show\"";
 							}
 							achTable +=	">"+
-											"<td>"+
-												"<a href=\""+
-													gamers[i][1]+
-												"\">"+
-													gamers[i][0]+
-												"</a>"+
+											"<td title=\"Toggle No-Show\">"+
+												gamers[i][0]+
 											"</td>";
 
 							// Fill each column for the gamer
@@ -129,7 +125,7 @@ chrome.storage.sync.get(null, function(retVal) {
 								if (gamers[i][2][x]) {
 									achTable += " class=\"green locked\"><span/>";
 								} else {
-									achTable +=	" class=\"red unlocked\"><span/>";
+									achTable +=	" title=\"Toggle Achievement Status\" class=\"red unlocked\"><span/>";
 								}
 												
 								achTable +=	"</td>";
@@ -144,8 +140,14 @@ chrome.storage.sync.get(null, function(retVal) {
 						// Draw table
 						$("#boostAchievementTable").empty().append(achTable);
 
+						// Toggle table cells unlocked/locked achievement
 						$("#boostAchievementTable td.unlocked").on('click', function(e) {
 							$(this).toggleClass("red green");
+						});
+
+						// Toggle player as show/no-show
+						$("#boostAchievementTable tr.show td:first-child").on('click', function(e) {
+							$(this).parent().toggleClass("show noShow");
 						});
 					}, 500);
 				});

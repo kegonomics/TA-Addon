@@ -32,8 +32,12 @@
   display: inline-block;
   white-space: nowrap;
   line-height: 16px;
-  transform: translate(0,100%) rotate(-90deg);
+  transform: translate(0,100%) rotate(-45deg);
   transform-origin: 0 0;
+}
+
+#boostAchievementTable tr.noShow td {
+  background: #000;
 }
 
 #boostAchievementTable .green span:after {
@@ -42,13 +46,17 @@
   content: "";
 }
 
+#boostAchievementTable tr.noShow .green span:after, #boostAchievementTable tr.noShow .red span:after {
+  color: #000;
+}
+
 #boostAchievementTable .red span:after {
   font-family: FontAwesome;
   color: #F4A6A4;
   content: "";
 }
 
-#boostAchievementTable .unlocked {
+#boostAchievementTable .unlocked, #boostAchievementTable tr td:first-child {
   cursor: pointer;
 }
 
