@@ -1,3 +1,14 @@
+// Check whether new version is installed
+chrome.runtime.onInstalled.addListener(function(details){
+	if(details.reason == "install") {
+		chrome.storage.sync.set({
+			boostSessionTable: true,
+			boostSessionTableReplace: false
+		  });
+	} else if(details.reason == "update"){
+	}
+});
+
 function createTable(gamers, numTable = 1) {
 	var achName = prompt("What is the name of the achievement?");
 	var numSteps = prompt("How many steps does this achievement have?");
@@ -64,7 +75,6 @@ function createTable(gamers, numTable = 1) {
 }
 
 chrome.storage.sync.get(null, function(retVal) {
-//	console.log("retVal: ", retVal);
 	if (retVal["boostSessionTable"]) { // If user has option enabled
 		if ($("form#frm").attr("action").match(/gamingsession\.aspx/)[0]) { // Checks if page is a boosting session
 			$("#h1Messages").before("<div id=\"TAAddon\"></div>");
@@ -158,8 +168,8 @@ chrome.storage.sync.get(null, function(retVal) {
 
 						// Build columns for each achievement
 						for (i=0;i<sessionAchievements.length;i++) {
-							achTable +=		"<th class=\"ach"+i+"\">"+
-												"<div class=\"vertical-text\"><a href=\""+
+							achTable +=		"<th>"+
+												"<div class=\"vertical-text ach"+i+"\"><a href=\""+
 													sessionAchievements[i][2]+
 												"\" target=\"_blank\">"+
 													sessionAchievements[i][1]+

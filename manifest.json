@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "TA Session Achievement Table",
-  "version": "0.0.4",
+  "version": "0.1.1",
   "options_page": "options.html",
   "icons": { 
       "16": "img/icon16.png",
