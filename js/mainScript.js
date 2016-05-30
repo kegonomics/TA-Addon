@@ -1,9 +1,94 @@
+function createTable(gamers, numTable = 1) {
+	var achName = prompt("What is the name of the achievement?");
+	var numSteps = prompt("How many steps does this achievement have?");
+	var achSteps = [];
+
+	for (var i=0;i<numSteps;i++) {
+		if (i==0) {
+			achSteps.push(prompt("What is the first step?"));
+		} else if (i == (numSteps - 1)) {
+			achSteps.push(prompt("What is the last step?"));
+		} else {
+			achSteps.push(prompt("What is the next step?"));
+		}
+	}
+
+	var html = "<h1 class=\"block\">"+achName+" // Achievement</h1><table id=\"customTable"+numTable+"\" class=\"maintable disable-selection\"><thead><tr>";
+
+	for (var i=0;i<numSteps;i++) {
+		html += "<th><div class=\"vertical-text step"+i+"\"><span>"+achSteps[i]+"</span></div></th>";
+	}
+
+	html += "<th></th></tr></thead><tbody>";
+
+	for (var i=0;i<gamers.length;i++) {
+		html += "<tr";
+		if (i%2) {
+			html += " class=\"even show\"";
+		} else {
+			html += " class=\"odd show\"";
+		}
+		html += ">";
+
+		for(var x=0;x<numSteps;x++) {
+			html += "<td title=\"Toggle Step Status\" class=\"red unlocked\"><span/></td>";
+		}
+
+		html += "<td title=\"Toggle No-Show\">"+gamers[i][0]+"</td></tr>";
+	}
+
+	html += "</tbody></table>";
+
+	// Draw table
+	$("#customTable").before(html);
+
+	var thWidth = [];
+	for (var i=0;i<numSteps;i++) {
+		thWidth.push($("#customTable"+numTable+" .step"+i).width());
+	}
+
+	thWidth = thWidth.sort(function (a, b) {  return a - b;  });
+
+	$("#customTable"+numTable+" th:first-child").css("height",thWidth[thWidth.length - 1] * .7);
+	$("#customTable"+numTable+" .vertical-text").css("width",16);
+
+	// Toggle table cells unlocked/locked achievement
+	$("#TAAddon td.unlocked").on('click', function(e) {
+		$(this).toggleClass("red green");
+	});
+
+	// Toggle player as show/no-show
+	$("#TAAddon tr.show td:last-child").on('click', function(e) {
+		$(this).parent().toggleClass("show noShow");
+	});
+}
+
 chrome.storage.sync.get(null, function(retVal) {
 //	console.log("retVal: ", retVal);
 	if (retVal["boostSessionTable"]) { // If user has option enabled
 		if ($("form#frm").attr("action").match(/gamingsession\.aspx/)[0]) { // Checks if page is a boosting session
+			$("#h1Messages").before("<div id=\"TAAddon\"></div>");
+			// Get gamers in session
+			// 0 = Gamertag
+			// 1 = Gamer achievements link for game
+			// 2 = Gamers achievement completions for session (true/false)
+			var gamerLinks = $("#oGamingSessionGamerList .gamer a");
+			var gamers = [];
+			var n = 0;
+
+			for (i=0;i<gamerLinks.length;i++) {
+				if (gamerLinks[i].href.match(/achievements\.htm/)) {
+					gamers[n] = [
+						gamerLinks[i].text,
+						gamerLinks[i].href,
+						[]
+					];
+					n++;
+				}
+			}
+
 			if ($(".sessionachievements .friendfeeditem span a[href$='achievement.htm'").length > 1) { // Checks for more than 1 achievement
-				$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">Build This Session's Achievement Table</a></div>");
+				$("#TAAddon").prepend("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">Build This Session's Achievement Table</a></div>");
 				
 				// On click, do this
 				$("#main .session").on("click","#boostAchievementTableButton",function(event) {
@@ -24,25 +109,6 @@ chrome.storage.sync.get(null, function(retVal) {
 								sessionAchievements[i].text,
 								sessionAchievements[i].href
 							];
-						}
-
-						// Get gamers in session
-						// 0 = Gamertag
-						// 1 = Gamer achievements link for game
-						// 2 = Gamers achievement completions for session (true/false)
-						var gamerLinks = $("#oGamingSessionGamerList .gamer a");
-						var gamers = [];
-						var n = 0;
-
-						for (i=0;i<gamerLinks.length;i++) {
-							if (gamerLinks[i].href.match(/achievements\.htm/)) {
-								gamers[n] = [
-									gamerLinks[i].text,
-									gamerLinks[i].href,
-									[]
-								];
-								n++;
-							}
 						}
 
 						if (retVal["boostSessionTableReplace"]) {
@@ -92,7 +158,7 @@ chrome.storage.sync.get(null, function(retVal) {
 
 						// Build columns for each achievement
 						for (i=0;i<sessionAchievements.length;i++) {
-							achTable +=		"<th>"+
+							achTable +=		"<th class=\"ach"+i+"\">"+
 												"<div class=\"vertical-text\"><a href=\""+
 													sessionAchievements[i][2]+
 												"\" target=\"_blank\">"+
@@ -144,18 +210,40 @@ chrome.storage.sync.get(null, function(retVal) {
 						// Draw table
 						$("#boostAchievementTable").empty().append(achTable);
 
+						var thWidth = [];
+						for (var i=0;i<sessionAchievements.length;i++) {
+							thWidth.push($("#boostAchievementTable .ach"+i).width());
+						}
+
+						thWidth = thWidth.sort(function (a, b) {  return a - b;  });
+
+						$("#boostAchievementTable th:first-child").css("height",thWidth[thWidth.length - 1] * .7);
+						$("#boostAchievementTable .vertical-text").css("width",16);
+
 						// Toggle table cells unlocked/locked achievement
-						$("#boostAchievementTable td.unlocked").on('click', function(e) {
+						$("#TAAddon td.unlocked").on('click', function(e) {
 							$(this).toggleClass("red green");
 						});
 
 						// Toggle player as show/no-show
-						$("#boostAchievementTable tr.show td:last-child").on('click', function(e) {
+						$("#TAAddon tr.show td:last-child").on('click', function(e) {
 							$(this).parent().toggleClass("show noShow");
 						});
 					}, 500);
 				});
-			}
+			} // if achievements is more than 1
+
+			$("#TAAddon").append("<div id=\"customTable\" class=\"xb\"><a id=\"customTableButton\" class=\"xbbutton blue\" href=\"#\">Create a Table for an Achievement w/ Multiple Steps</a></div>");
+
+			var numTable = 1;
+
+			// On click, do this
+			$("#main .session").on("click","#customTableButton",function(event) {
+				event.preventDefault();
+
+				createTable(gamers,numTable);
+				numTable++;
+			});
 		}
 	}
 });
