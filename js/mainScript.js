@@ -1,16 +1,15 @@
 chrome.storage.sync.get(null, function(retVal) {
 //	console.log("retVal: ", retVal);
-
 	if (retVal["boostSessionTable"]) { // If user has option enabled
 		if ($("form#frm").attr("action").match(/gamingsession\.aspx/)[0]) { // Checks if page is a boosting session
 			if ($(".sessionachievements .friendfeeditem span a[href$='achievement.htm'").length > 1) { // Checks for more than 1 achievement
-				$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">Build This Session's Achievement Matrix</a></div>");
+				$("#h1Messages").before("<div id=\"boostAchievementTable\" class=\"xb\"><a id=\"boostAchievementTableButton\" class=\"xbbutton\" href=\"#\">Build This Session's Achievement Table</a></div>");
 				
 				// On click, do this
 				$("#main .session").on("click","#boostAchievementTableButton",function(event) {
 					event.preventDefault();
 					
-					$("#boostAchievementTable").empty().before("<h1 class=\"block\">Achievement Matrix</h1>").append("<div class=\"spinner\">Loading<br/><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
+					$("#boostAchievementTable").empty().before("<h1 class=\"block\">Achievement Table</h1>").append("Generating Table<br/><i>The page may appear to be frozen while the table is generated.<br/>Thank you for your patience!</i><div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div><div class=\"bounce4\"></div></div>");
 
 					setTimeout(function(){
 						// Get achievement info
@@ -91,7 +90,7 @@ chrome.storage.sync.get(null, function(retVal) {
 							achTable +=		"<th>"+
 												"<div class=\"vertical-text\"><a href=\""+
 													sessionAchievements[i][2]+
-												"\">"+
+												"\" target=\"_blank\">"+
 													sessionAchievements[i][1]+
 												"</a></div>"+
 											"</th>";

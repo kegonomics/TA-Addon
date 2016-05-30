@@ -1,3 +1,7 @@
+@font-face {
+  font-family: FontAwesome;
+  src: url("chrome-extension://bkoniahebhgdaafnokchlmiefckajbga/fonts/FontAwesome.otf") format("opentype");
+}
 input{
   display: block;
   margin: 0 auto 40px;

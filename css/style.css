@@ -1,3 +1,8 @@
+@font-face {
+  font-family: FontAwesome;
+  src: url("chrome-extension://bkoniahebhgdaafnokchlmiefckajbga/fonts/FontAwesome.otf") format("opentype");
+}
+
 #boostAchievementTable i {
   font-size: auto;
 }
@@ -37,7 +42,7 @@
 }
 
 #boostAchievementTable tr.noShow td {
-  background: #000;
+  background: #000 !important;
 }
 
 #boostAchievementTable .green span:after {
@@ -58,6 +63,10 @@
 
 #boostAchievementTable .unlocked, #boostAchievementTable tr td:last-child {
   cursor: pointer;
+}
+
+#boostAchievementTable .green.locked {
+  background-color: #2e4f2e;
 }
 
 #boostAchievementTable .locked {
