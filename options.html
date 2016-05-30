@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>TrueAchievements Additamenta Options</title>
+	<title>TA Addon</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/options.css">
@@ -9,18 +9,49 @@
 <body id="additamentaOptions">
 	<div class="container-fluid">
 
-<h2>Options</h2>
-	<div class="checkbox">
-		<label>
-			<input type="checkbox" id="boostSessionTable">
-			<h4>Boosting session achievement tables</h4>
-		</label>
-	</div><br/>
+		<div class="page-header">
+			<h3>TA Addon Options <small>// Customize your experience</small></h3>
+		</div>
 
-	<div id="status"></div>
-	<button class="btn btn-primary" id="save">Save</button>
+		<div id="status"></div>
 
+		<div class="media checkbox">
+			<label>
+				<div class="media-left">
+			 		<input class="media-object" type="checkbox" id="boostSessionTable">
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Boosting Sessions Achievement Table</h4>
+					<p>
+						Creates a table in a Gaming Session that shows which achievements each player has gotten from the chosen achievements in the session.
+						<ul>
+							<li>Tables can only be generated for sessions with more than 1 achievement.</li>
+							<li>Achievements that the player has already unlocked when the table is generated, are not changeable on the table.</li>
+						</ul>
+					</p>
+				</div>
+			</label>
+		</div>
+
+		<div class="media checkbox">
+			<label>
+				<div class="media-left">
+			 		<input class="media-object" type="checkbox" id="boostSessionTableReplace">
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Replace Player List with Achievement Table</h4>
+					<p>
+					Replaces the default player list with the generated achievement table.
+					</p>
+				</div>
+			</label>
+		</div>
+
+		<button class="btn btn-primary btn-lg btn-block" id="save">Save</button>
 	</div>
+
 	<script type="text/javascript" src="js/options.js"></script>
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

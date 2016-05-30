@@ -25,7 +25,8 @@
   ],
 
   "web_accessible_resources": [
-    "fonts/FontAwesome.otf"
+    "fonts/FontAwesome.otf",
+    "img/*"
   ],
 
   "permissions": [

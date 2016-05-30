@@ -1,8 +1,10 @@
 // Saves options to chrome.storage
 function saveOptions() {
   var boostSessionTable = document.getElementById('boostSessionTable').checked;
+  var boostSessionTableReplace = document.getElementById('boostSessionTableReplace').checked;
   chrome.storage.sync.set({
-    boostSessionTable: boostSessionTable
+    boostSessionTable: boostSessionTable,
+    boostSessionTableReplace: boostSessionTableReplace
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -17,9 +19,11 @@ function saveOptions() {
 // stored in chrome.storage.
 function restoreOptions() {
   chrome.storage.sync.get({
-    boostSessionTable: true
+    boostSessionTable: true,
+    boostSessionTableReplace: true
   }, function(items) {
     document.getElementById('boostSessionTable').checked = items.boostSessionTable;
+    document.getElementById('boostSessionTableReplace').checked = items.boostSessionTableReplace;
   });
 }
 document.addEventListener('DOMContentLoaded', restoreOptions);

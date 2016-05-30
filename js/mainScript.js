@@ -45,6 +45,11 @@ chrome.storage.sync.get(null, function(retVal) {
 							}
 						}
 
+						if (retVal["boostSessionTableReplace"]) {
+							$('h1:contains("Gamers in session")').remove();
+							$("#oGamingSessionGamerListHolder").remove();
+						}
+
 						// Get Achievement Completion for Gamers
 						for (i=0;i<gamers.length;i++) {
 							var html = $("#main",$.ajax({type: "GET", url: gamers[i][1], async: false}).responseText);
